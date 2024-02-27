@@ -17,6 +17,8 @@ from pathlib import Path
 #         imgID_to_coreID[imgID] = coreID
 #         coreID_to_imgID[coreID] = imgID
 #     return(imgID_to_coreID, coreID_to_imgID)   
+LOGO_REPO1 = 'https://raw.githubusercontent.com/osmanbeyoglulab/MesotheliomaSpatialAtlas_data/main/panel1_logo4/'
+LOGO_REPO2 = 'https://raw.githubusercontent.com/osmanbeyoglulab/MesotheliomaSpatialAtlas_data/main/panel2_logo4/'
 
 def get_orderedList(opt):
     list_order = { 
@@ -106,7 +108,9 @@ def load_HEImages(path_img_logo, image_names, core_ids, core_ids2):
     return(images, showedImage_names, showedCore_ids, showedCore_ids2)  
 
 def load_clickable_coreImages(HE_id, panel1_id, panel2_id):
-    
+
+
+
     logo_NA = "./assets/figures/logo_NA.png"
 
     PATH_HE_logo = "./data/core_image/H&E_logo" 
@@ -124,7 +128,7 @@ def load_clickable_coreImages(HE_id, panel1_id, panel2_id):
         images["H&E"]=(f"data:image/jpeg;base64,{encoded}")
 
     for chanel in p1s:
-        file = f"{PATH_panel1_logo}/{chanel}/{panel1_id}.png"
+        file = f"{LOGO_REPO1}/{chanel}/{panel1_id}.png"
         if not os.path.isfile(file):
             file = logo_NA
         with open(file, "rb") as image:
@@ -133,7 +137,7 @@ def load_clickable_coreImages(HE_id, panel1_id, panel2_id):
             images[label]=(f"data:image/jpeg;base64,{encoded}")
     
     for chanel in p2s:
-        file = f"{PATH_panel2_logo}/{chanel}/{panel2_id}.png"
+        file = f"{LOGO_REPO2}/{chanel}/{panel2_id}.png"
         if not os.path.isfile(file):
             file = logo_NA
         with open(file, "rb") as image:
@@ -161,7 +165,7 @@ def load_coreImages(HE_id, panel1_id, panel2_id):
         images["H&E"]=(f"<img src= 'data:image/png;base64,{encoded}' class='img-fluid' style='width:100%'>")
 
     for chanel in p1s:
-        file = f"{PATH_panel1_logo}/{chanel}/{panel1_id}.png"
+        file = f"{LOGO_REPO1}/{chanel}/{panel1_id}.png"
         if not os.path.isfile(file):
             file = logo_NA
         with open(file, "rb") as image:
@@ -170,7 +174,7 @@ def load_coreImages(HE_id, panel1_id, panel2_id):
             images[label]=(f"<img src= 'data:image/png;base64,{encoded}' class='img-fluid' style='width:100%'>")
     
     for chanel in p2s:
-        file = f"{PATH_panel2_logo}/{chanel}/{panel2_id}.png"
+        file = f"{LOGO_REPO2}/{chanel}/{panel2_id}.png"
         if not os.path.isfile(file):
             file = logo_NA
         with open(file, "rb") as image:
@@ -251,30 +255,6 @@ def customize_sidebar(color = "#000000"):
     </style>
     """, unsafe_allow_html=True)
     
-def generat_logo_images():
-    from PIL import Image
-    import os
-    import pandas as pd
-    df = pd.read_csv("./data/mapping_nameCLeaned_wImgID.csv")
-    image_list = df['level2_name'].dropna()
-    
-    path_img_big_all = "./data/core_image/H&E_level2_all"
-    path_img_big = "./data/core_image/H&E_level2"
-    path_img_logo =  "./data/core_image/H&E_logo"
-
-    notFound = []
-    for file in image_list:
-        pathfile = f"{path_img_big_all}/{file}.png"
-        if not os.path.isfile(pathfile):
-            notFound.append(file)
-            continue
-        im = Image.open(pathfile)
-        im.save(f"{path_img_big}/{file}.png")
-        
-        im = im.resize((100,100), Image.LANCZOS)
-        im.save(f"{path_img_logo}/{file}.png")
-    print(notFound)
-
 
 def get_screen_width():
     # #Import the required libraries
