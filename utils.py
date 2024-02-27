@@ -129,8 +129,9 @@ def load_clickable_coreImages(HE_id, panel1_id, panel2_id):
 
     for chanel in p1s:
         file = f"{LOGO_REPO1}/{chanel}/{panel1_id}.png"
-        if not os.path.isfile(file):
-            file = logo_NA
+
+        # if not os.path.isfile(file):
+        #     file = logo_NA
         with open(file, "rb") as image:
             encoded = base64.b64encode(image.read()).decode()
             label = chanel.replace("multi", "Composite")
